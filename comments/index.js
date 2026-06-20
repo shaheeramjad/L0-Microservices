@@ -13,6 +13,10 @@ app.get('/posts/:id/comments', (req, res) => {
     res.send(commentsByPostId[req.params.id] || []);
 });
 
+app.post('/events', (req, res) => {
+    res.send({});
+});
+
 app.post('/posts/:id/comments', (req, res) => {
    const commentId = randomBytes(4).toString('hex');
    const {content} = req.body;
