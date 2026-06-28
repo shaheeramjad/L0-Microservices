@@ -41,31 +41,6 @@ app.post('/posts', async (req, res) => {
 app.post('/events', (req, res) => {
 
     console.log('Event Received',req.body.type);
-    // const event = req.body;
-
-    // switch (event.type) {
-    //     case 'CommentCreated':
-    //         const post = posts[event.data.postId];
-    //         if (post) {
-    //             post.comments = post.comments || [];
-    //             post.comments.push({
-    //                 id: event.data.id,
-    //                 content: event.data.content,
-    //                 status: event.data.status
-    //             });
-    //         }
-    //         break;
-    //     case 'CommentUpdated':
-    //         const postToUpdate = posts[event.data.postId];
-    //         if (postToUpdate && postToUpdate.comments) {
-    //             const comment = postToUpdate.comments.find(comment => comment.id === event.data.id);
-    //             if (comment) {
-    //                 comment.status = event.data.status;
-    //                 comment.content = event.data.content;
-    //             }
-    //         }
-    //         break;
-    // }
 
      res.send({});
 });

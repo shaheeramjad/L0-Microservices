@@ -7,17 +7,18 @@ export default () => {
     const [posts, setPosts] = useState([]);
 
     React.useEffect(() => {
-        axios.get('http://localhost:4000/posts')
+        axios.get('http://localhost:4002/posts')
             .then(response => {
                 setPosts(response.data);
             });
+            
     }, []);
 
 const renderedPosts = Object.values(posts).map(post => {
     return (<div className="card" style={{ marginBottom: '20px', width: '30%' }} key={post.id}>
         <div className="card-body">
             <h3>{post.title}</h3>
-            <CommentList postId={post.id} />
+            <CommentList comments={post.comments} />
             <CommentCreate postId={post.id} />
         </div>
     </div>
