@@ -7,11 +7,22 @@ app.use (bodyParser.json ());
 
 app.post ('/events', async (req, res) => {
   const event = req.body;
-  
-  await axios.post ('http://localhost:4000/events', event);
-  await axios.post ('http://localhost:4001/events', event);
-  await axios.post ('http://localhost:4002/events', event);
-  await axios.post ('http://localhost:4003/events', event);  
+
+  const targets = [
+    'http://localhost:4000/events',
+    'http://localhost:4001/events',
+    'http://localhost:4002/events',
+    'http://localhost:4003/events'
+  ];
+
+  await Promise.all(targets.map(async (url) => {
+    try {
+      await axios.post(url, event);
+    } catch (err) {
+      console.log(`Event Bus forward failed for ${url}: ${err.message}`);
+    }
+  }));
+
   res.send ({ status: 'OK' });
 }); 
 
