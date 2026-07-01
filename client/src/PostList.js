@@ -7,7 +7,7 @@ export default () => {
     const [posts, setPosts] = useState([]);
 
     React.useEffect(() => {
-        axios.get('http://localhost:4002/posts')
+        axios.get('http://posts.com/posts')
             .then(response => {
                 setPosts(response.data);
             });

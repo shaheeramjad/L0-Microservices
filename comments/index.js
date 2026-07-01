@@ -23,15 +23,19 @@ app.post('/posts/:id/comments', async (req, res) => {
     comments.push({id: commentId, content, status: 'pending'});
     commentsByPostId[req.params.id] = comments;
 
-    await axios.post('http://localhost:4005/events', {
-        type: 'CommentCreated',
-        data: {
-            id: commentId,
-            content,
-            postId: req.params.id,
-            status: 'pending'
-        }
-    });
+    try {
+        await axios.post('http://event-bus-srv:4005/events', {
+            type: 'CommentCreated',
+            data: {
+                id: commentId,
+                content,
+                postId: req.params.id,
+                status: 'pending'
+            }
+        });
+    } catch (err) {
+        console.error('Failed to publish CommentCreated event', err.message);
+    }
 
     res.status(201).send(comments);
 });
@@ -49,15 +53,19 @@ app.post('/events', async (req, res) => {
         comment.status = status;
         comment.content = content;
 
-        await axios.post('http://localhost:4005/events', {
-            type: 'CommentUpdated',
-            data: {
-                id,
-                postId,
-                status,
-                content
-            }
-        });
+        try {
+            await axios.post('http://event-bus-srv:4005/events', {
+                type: 'CommentUpdated',
+                data: {
+                    id,
+                    postId,
+                    status,
+                    content
+                }
+            });
+        } catch (err) {
+            console.error('Failed to publish CommentUpdated event', err.message);
+        }
     }
 
     res.send({});

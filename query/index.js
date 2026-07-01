@@ -51,9 +51,19 @@ app.post('/events', (req, res) => {
 
 app.listen(4002, async () => {
     console.log('Query service listening on port 4002');
-   const res =  await axios.get('http://localhost:4005/events');
-    for (let event of res.data) {
-        console.log('Processing event:', event.type);
-        handleEvent(event.type, event.data);
-    }
+    const fetchEvents = async () => {
+        try {
+            const res = await axios.get('http://event-bus-srv:4005/events');
+
+            for (let event of res.data) {
+                console.log('Processing event:', event.type);
+                handleEvent(event.type, event.data);
+            }
+        } catch (err) {
+            console.log('Failed to fetch past events, retrying:', err.message);
+            setTimeout(fetchEvents, 1000);
+        }
+    };
+
+    fetchEvents();
 });
